@@ -66,11 +66,11 @@
     var prog;
 
     /* Attributes & Uniforms */
-    var attributes = ['aPosition', 'aNormal', 'aTexture'];
+    var attributes = ['aPosition', 'aNormal'];
     var uniforms   = [
         'uPerspective', 'uTransform', 'uAmbient', 'uDiffuse', 'uSpecular',
         'uShine', 'uLightOn', 'uGlobalAmbient', 'uLight', 'uBasic', 'uIsBasic',
-        'uTextureId', 'uIsSpecMapped'
+        'uTextureId', 'uCloudsId', 'uCloudsOffset', 'uCloudsEnabled'
     ];
 
     var mapAttributes = function(p, a, u) {
@@ -95,11 +95,11 @@
     /* Lighting */
     var lights = [
         {
-            ambient:    vec4(0.1, 0.1, 0.1, 1.0),
-            diffuse:    vec4(0.2, 0.2, 0.2, 1.0),
-            specular:   vec4(0.85, 0.85, 0.836, 1.0),
-            parameters: vec4(2.0, 1.0, 3.0, 0.0),
-            center:     vec4(0.0, 0.0, -4.0),
+            ambient:    vec4(0.2, 0.2, 0.1, 1.0),
+            diffuse:    vec4(0.3, 0.3, 0.2, 1.0),
+            specular:   vec4(0.9, 0.9, 0.7, 1.0),
+            parameters: vec4(2.0, 2.0, 2.0, 0.0),
+            center:     vec4(0.0, 0.0, -3.0),
             deltaU:     0.2,
             deltaV:     0.4,
             on:         true
@@ -112,7 +112,7 @@
             center:     vec4(0.0, 0.0, -1.0),
             deltaU:     0.1,
             deltaV:     0.2,
-            on:         true
+            on:         false
         }
     ];
 
@@ -179,6 +179,13 @@
             gl.uniform4fv(prog.uDiffuse, flatten(_diffuse));
             gl.uniform4fv(prog.uSpecular, flatten(_specular));
 
+            gl.uniform1i(prog.uCloudsEnabled, 0);
+            if (shape.cloudMap !== undefined) {
+                gl.uniform1i(prog.uCloudsEnabled, 1);
+                gl.uniform1i(prog.uCloudsId, shape.cloudMap);
+                gl.uniform1f(prog.uCloudsOffset, ts / 300000);
+            }
+
             gl.uniform1f(prog.uShine, shape.shine);
             gl.uniformMatrix4fv(prog.uTransform, false, flatten(shape.transform));
 
@@ -192,10 +199,6 @@
                     gl.bindBuffer(gl.ARRAY_BUFFER, section.nbuffer);
                     gl.bufferData(gl.ARRAY_BUFFER, flatten(section.normals),
                             gl.STATIC_DRAW);
-                    section.tbuffer = gl.createBuffer();
-                    gl.bindBuffer(gl.ARRAY_BUFFER, section.tbuffer);
-                    gl.bufferData(gl.ARRAY_BUFFER, flatten(section.texcoords),
-                            gl.STATIC_DRAW);
                 }
                 gl.bindBuffer(gl.ARRAY_BUFFER, section.vbuffer);
                 gl.vertexAttribPointer(prog.aPosition, 3, gl.FLOAT, false, 0, 0);
@@ -203,9 +206,6 @@
                 gl.bindBuffer(gl.ARRAY_BUFFER, section.nbuffer);
                 gl.vertexAttribPointer(prog.aNormal, 3, gl.FLOAT, false, 0, 0);
                 gl.enableVertexAttribArray(prog.aNormal);
-                gl.bindBuffer(gl.ARRAY_BUFFER, section.tbuffer);
-                gl.vertexAttribPointer(prog.aTexture, 2, gl.FLOAT, false, 0, 0);
-                gl.enableVertexAttribArray(prog.aTexture);
                 gl.drawArrays(section.method, 0, section.vertices.length);
             });
         });

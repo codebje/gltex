@@ -13,17 +13,22 @@ uniform sampler2D uTextureId, uCloudsId;
 uniform float uCloudsOffset;
 uniform bool uCloudsEnabled;
 
-varying vec3 L[2], N, E;
+varying vec3 L[2], N, E, T;
 varying float dist[2];
-varying vec2 texCoords;
 
 void main() {
     if (uIsBasic) {
         gl_FragColor = uBasic;
     } else {
         vec4 color = uGlobalAmbient;
-        vec2 texCoord = vec2( atan(N.z, N.x) / (2. * M_PI), acos(N.y) / M_PI);
+        vec2 texCoord = vec2( (M_PI + atan(T.z, T.x)) / (2. * M_PI), acos(T.y) / M_PI);
         vec4 tex   = texture2D(uTextureId, texCoord);
+
+        tex.a = 1.0;
+        if (uCloudsEnabled) {
+            vec4 cloud = texture2D(uCloudsId, vec2(texCoord.s + uCloudsOffset, texCoord.t));
+            tex = mix(tex, cloud, cloud.a * 2. / 3.);
+        }
 
         vec3 NM = N;
 
