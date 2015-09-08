@@ -13,6 +13,8 @@ uniform sampler2D uTextureId, uCloudsId;
 uniform float uCloudsOffset;
 uniform bool uCloudsEnabled;
 
+uniform bool uIsPlanar;
+
 varying vec3 L[2], N, E, T;
 varying float dist[2];
 
@@ -22,6 +24,11 @@ void main() {
     } else {
         vec4 color = uGlobalAmbient;
         vec2 texCoord = vec2( (M_PI + atan(T.z, T.x)) / (2. * M_PI), acos(T.y) / M_PI);
+
+        if (uIsPlanar) {
+            texCoord = vec2(T.x / 2., T.y / 2.);
+        }
+
         vec4 tex   = texture2D(uTextureId, texCoord);
 
         tex.a = 1.0;

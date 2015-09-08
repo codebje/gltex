@@ -114,6 +114,13 @@ button.active:hover {
     width: 9em;
 }
 
+#ui-planar {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    width: 9em;
+}
+
 #ui-earth {
     position: absolute;
     bottom: 1em;

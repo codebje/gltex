@@ -32,7 +32,7 @@
 
     var canvas = document.getElementById('canvas'),
         gl     = WebGLUtils.setupWebGL(canvas),
-        shapes = [makeSphere(0.2), makeSphere(0.2), makeSphere(0.2)];
+        shapes = [makeSphere(0.2), makeSphere(0.2), makeSphere(0.2), makeSphere(0.2)];
 
     /* Textures */
     textures.checkers(gl, gl.TEXTURE0);
@@ -46,6 +46,7 @@
     shapes[0].position( 0.3,  0.3, -3);
     shapes[1].position(-0.3,  0.3, -3);
     shapes[2].position(-0.3, -0.3, -3);
+    shapes[3].position( 0.3, -0.3, -3);
 
     shapes[0].texture     = 0;  // Checkerboard
     shapes[0].normalMap   = -1;
@@ -58,6 +59,9 @@
     shapes[2].specularMap = 5;
     shapes[2].cloudMap    = 6;
     shapes[2].specular    = vec4(0.1, 0.1, 0.1, 1.0);
+    shapes[3].texture     = 0;  // Planar checkerboard
+    shapes[3].normalMap   = -1;
+    shapes[3].planar      = true;
 
     /* Set up canvas */
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -70,7 +74,8 @@
     var uniforms   = [
         'uPerspective', 'uTransform', 'uAmbient', 'uDiffuse', 'uSpecular',
         'uShine', 'uLightOn', 'uGlobalAmbient', 'uLight', 'uBasic', 'uIsBasic',
-        'uTextureId', 'uCloudsId', 'uCloudsOffset', 'uCloudsEnabled'
+        'uTextureId', 'uCloudsId', 'uCloudsOffset', 'uCloudsEnabled',
+        'uIsPlanar'
     ];
 
     var mapAttributes = function(p, a, u) {
@@ -173,6 +178,7 @@
             gl.uniform4fv(prog.uGlobalAmbient,
                     flatten(mult([0.2, 0.2, 0.2, 1.0], shape.ambient)));
 
+            gl.uniform1i(prog.uIsPlanar, shape.planar === true);
             gl.uniform1i(prog.uTextureId, shape.texture);
             gl.uniform1iv(prog.uLightOn, new Int32Array(_enabled));
             gl.uniform4fv(prog.uAmbient, flatten(_ambient));
