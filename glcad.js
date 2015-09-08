@@ -32,10 +32,11 @@
 
     var canvas = document.getElementById('canvas'),
         gl     = WebGLUtils.setupWebGL(canvas),
-        shapes = [makeSphere(0.2), makeSphere(0.2)];
+        shapes = [makeSphere(0.2), makeSphere(0.2), makeSphere(0.2)];
 
-    shapes[0].position(0.25, 0, -2);
-    shapes[1].position(-0.25, 0, -2);
+    shapes[0].position( 0.25,   0.25, -3);
+    shapes[1].position(-0.25,  0.25, -3);
+    shapes[2].position(-0.25, -0.25, -3);
     shapes[0].texture   = 0;
     shapes[0].normalMap = -1;
 

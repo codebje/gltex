@@ -20,7 +20,7 @@
   <div id="ui-objects">
     <div id="controls">
       <section>
-        <h2>Rotation</h2>
+        <h2>Mars</h2>
         <label>x:</label> <input id="phi" type="range" min="-180" max="180" step="1"><br>
         <label>y:</label> <input id="rho" type="range" min="-180" max="180" step="1"><br>
         <label>z:</label> <input id="thet" type="range" min="-180" max="180" step="1"><br>
@@ -31,7 +31,7 @@
   <div id="ui-lights">
     <div id="controls">
       <section>
-        <h2>Rotation</h2>
+        <h2>Checkers</h2>
         <label>x:</label> <input id="phi_" type="range" min="-180" max="180" step="1"><br>
         <label>y:</label> <input id="rho_" type="range" min="-180" max="180" step="1"><br>
         <label>z:</label> <input id="the_" type="range" min="-180" max="180" step="1"><br>
@@ -39,7 +39,20 @@
     </div>
   </div>
 
+  <div id="ui-earth">
+    <div id="controls">
+      <section>
+        <h2>Earth</h2>
+        <label>x:</label> <input id="phi0" type="range" min="-180" max="180" step="1"><br>
+        <label>y:</label> <input id="rho0" type="range" min="-180" max="180" step="1"><br>
+        <label>z:</label> <input id="the0" type="range" min="-180" max="180" step="1"><br>
+      </section>
+    </div>
+  </div>
+
   <div id="note">
-      Hi.
+    Top left: normal mapped <a href="http://planetpixelemporium.com/mars.html">Mars</a>.
+    Top right: regular texture mapped checkerboard.
+    Bottom left: specular &amp; bump mapped <a href="http://planetpixelemporium.com/earth.html">Earth</a>.
   </div>
 </body>

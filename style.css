@@ -105,6 +105,13 @@ button.active:hover {
     width: 9em;
 }
 
+#ui-earth {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+    width: 9em;
+}
+
 .onoffswitch {
     display: inline-block;
     margin-left: 1em;
