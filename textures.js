@@ -52,8 +52,10 @@ var textures = {};
         };
     };
 
-    textures.deathstar = image('deathstar.jpg');
-    textures.phobos    = image('phobos.gif');
-    textures.mars      = image('mars_1k_color.jpg');
-    textures.marsBumps = image('mars_1k_normal.jpg');
+    textures.mars       = image('mars_1k_color.jpg');
+    textures.marsNormal = image('mars_1k_normal.jpg');
+    textures.earth      = image('earthmap1k.jpg');
+    textures.earthBump  = image('earthbump1k.jpg');
+    textures.earthSpecs = image('earthspec1k.jpg');
+    textures.earthCloud = image('earthcloudmap.png');
 }());
