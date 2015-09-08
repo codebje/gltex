@@ -54,7 +54,7 @@ var genSphere = function(r) {
         [4, 9, 5],   [2, 4, 11],  [6, 2, 10],   [8, 6, 7],   [9, 8, 1]
     ].map(function(f) {
         return f.map(function(e) { return isoverts[e]; });
-    }), 4);
+    }), 5);
 
     var totex = function(face) {
         var θ = Math.acos(face[1]),

@@ -40,11 +40,20 @@ section table {
 section input[type=color] {
     width: 3.5em;
 }
+section input[type=checkbox] {
+    width: 1.5em;
+    position: relative;
+    left: 9.5em;
+}
 section label {
     width: 1em;
     display: inline-block;
     position: absolute;
     left: 0;
+}
+section label.check {
+    width: 8em;
+    left: 1em;
 }
 
 button {

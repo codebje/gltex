@@ -9,20 +9,19 @@ uniform vec4 uGlobalAmbient;
 uniform vec4 uAmbient[2], uDiffuse[2], uSpecular[2];
 uniform bool uLightOn[2];
 uniform float uShine;
-uniform sampler2D uTextureId, uNormalId;
-uniform bool uIsNormalMapped;
+uniform sampler2D uTextureId, uNormalId, uSpecId;
+uniform bool uIsNormalMapped, uIsSpecMapped;
 
 varying vec3 L[2], N, E, T;
 varying float dist[2];
 varying vec2 texCoords;
 
 void main() {
-
     if (uIsBasic) {
         gl_FragColor = uBasic;
     } else {
         vec4 color = uGlobalAmbient;
-        vec2 texCoord = vec2( atan(T.y, T.x) / (2. * M_PI), acos(T.z) / M_PI);
+        vec2 texCoord = vec2( atan(T.z, T.x) / (2. * M_PI), acos(T.y) / M_PI);
         vec4 tex   = texture2D(uTextureId, texCoord);
 
         vec3 NM = N;
@@ -38,15 +37,24 @@ void main() {
                 color += uAmbient[i] / dist[i];
 
                 float Kd = max(dot(L[i], NM), 0.0);
-                color += Kd * uDiffuse[i] / dist[i];
+                color += Kd * (tex + uDiffuse[i]) / dist[i];
 
-                if (dot(L[i], NM) > 0.0) {
-                    float Ks = pow(max(dot(NM, H), 0.0), uShine);
+                float shine = uShine;
+                bool specEnabled = true;
+                if (uIsSpecMapped) {
+                    float r = texture2D(uSpecId, texCoord).r;
+                    if (r < 0.02) {
+                        specEnabled = false;
+                    }
+                }
+
+                if (dot(L[i], NM) > 0.0 && specEnabled) {
+                    float Ks = pow(max(dot(NM, H), 0.0), shine);
                     color += Ks * uSpecular[i] / dist[i];
                 }
             }
         }
 
-        gl_FragColor = mix(color, tex * color, 0.5);
+        gl_FragColor = color;
     }
 }

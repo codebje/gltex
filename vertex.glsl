@@ -20,19 +20,5 @@ void main() {
     for (int i = 0; i < 2; i++) {
         L[i] = normalize(uLight[i].xyz - pos.xyz);
         dist[i] = length(uLight[i].xyz - pos.xyz);
-        /*
-            H[i] = normalize(L[i] - E);
-
-            vColor += uAmbient[i] / dist;
-
-            float Kd = max(dot(L[i], N), 0.0);
-            vColor += Kd * uDiffuse[i] / dist;
-
-            float Ks = pow(max(dot(N, H[i]), 0.0), uShine);
-            if (dot(L[i], N) > 0.0) {
-                vColor += Ks * uSpecular[i] / dist;
-            }
-        }
-        */
     }
 }

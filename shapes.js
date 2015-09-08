@@ -1,13 +1,14 @@
 var Shape = function () {
-    this.sections  = [];
-    this.settings  = { x: 0, y: 0, z: -2, rx: 0, ry: 0, rz: 0, sx: 1, sy: 1, sz: 1 };
-    this.transform = translate(0, 0, -2);
-    this.ambient   = vec4(0.3, 0.3, 0.3, 1.0);
-    this.diffuse   = vec4(0.3, 0.3, 0.3, 1.0);
-    this.specular  = vec4(0.7, 0.7, 0.7, 1.0);
-    this.shine     = 50.0;
-    this.texture   = 1;
-    this.normalMap = 2;
+    this.sections    = [];
+    this.settings    = { x: 0, y: 0, z: -2, rx: 0, ry: 0, rz: 0, sx: 1, sy: 1, sz: 1 };
+    this.transform   = translate(0, 0, -2);
+    this.ambient     = vec4(0.1, 0.1, 0.1, 1.0);
+    this.diffuse     = vec4(0.3, 0.3, 0.3, 1.0);
+    this.specular    = vec4(0.7, 0.7, 0.7, 1.0);
+    this.shine       = 50.0;
+    this.texture     = 1;
+    this.normalMap   = 2;
+    this.specularMap = -1;
 };
 
 Shape.accuracy       = Math.PI / 180,  // resolution of shapes

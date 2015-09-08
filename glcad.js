@@ -34,14 +34,30 @@
         gl     = WebGLUtils.setupWebGL(canvas),
         shapes = [makeSphere(0.2), makeSphere(0.2), makeSphere(0.2)];
 
-    shapes[0].position( 0.25,   0.25, -3);
-    shapes[1].position(-0.25,  0.25, -3);
-    shapes[2].position(-0.25, -0.25, -3);
+    /* Textures */
+    textures.checkers(gl, gl.TEXTURE0);
+    textures.mars(gl, gl.TEXTURE1);
+    textures.marsNormal(gl, gl.TEXTURE2);
+    textures.earth(gl, gl.TEXTURE3);
+    textures.earthNorm(gl, gl.TEXTURE4);
+    textures.earthSpecs(gl, gl.TEXTURE5);
+    textures.earthCloud(gl, gl.TEXTURE6);
 
-    shapes[0].texture   = 0;
-    shapes[0].normalMap = -1;
-    shapes[2].texture   = 3;
-    shapes[2].normalMap = -1;
+    shapes[0].position( 0.3,  0.3, -3);
+    shapes[1].position(-0.3,  0.3, -3);
+    shapes[2].position(-0.3, -0.3, -3);
+
+    shapes[0].texture     = 0;  // Checkerboard
+    shapes[0].normalMap   = -1;
+    shapes[1].texture     = 1;  // Mars
+    shapes[1].normalMap   = 2;
+    shapes[1].shine       = 10;
+    shapes[1].specular    = vec4(0.1, 0.1, 0.1, 1.0);
+    shapes[2].texture     = 3;  // Earth
+    shapes[2].normalMap   = 4;
+    shapes[2].specularMap = 5;
+    shapes[2].cloudMap    = 6;
+    shapes[2].specular    = vec4(0.1, 0.1, 0.1, 1.0);
 
     /* Set up canvas */
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -54,7 +70,8 @@
     var uniforms   = [
         'uPerspective', 'uTransform', 'uAmbient', 'uDiffuse', 'uSpecular',
         'uShine', 'uLightOn', 'uGlobalAmbient', 'uLight', 'uBasic', 'uIsBasic',
-        'uTextureId', 'uNormalId', 'uIsNormalMapped'
+        'uTextureId', 'uNormalId', 'uSpecId', 'uIsNormalMapped',
+        'uIsSpecMapped'
     ];
 
     var mapAttributes = function(p, a, u) {
@@ -90,7 +107,7 @@
         },
         {
             ambient:    vec4(0.1, 0.1, 0.1, 1.0),
-            diffuse:    vec4(0.2, 0.2, 0.2, 1.0),
+            diffuse:    vec4(0.5, 0.5, 0.5, 1.0),
             specular:   vec4(0.63, 0.63, 0.62, 1.0),
             parameters: vec4(0.3, 0.3, 0.7, 0.0),
             center:     vec4(0.0, 0.0, -1.0),
@@ -99,15 +116,6 @@
             on:         true
         }
     ];
-
-    /* Textures */
-    textures.checkers(gl, gl.TEXTURE0);
-    textures.mars(gl, gl.TEXTURE1);
-    textures.marsNormal(gl, gl.TEXTURE2);
-    textures.earth(gl, gl.TEXTURE3);
-    textures.earthBump(gl, gl.TEXTURE4);
-    textures.earthSpecs(gl, gl.TEXTURE5);
-    textures.earthCloud(gl, gl.TEXTURE6);
 
     var lightsBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, lightsBuffer);
@@ -164,12 +172,17 @@
             });
 
             gl.uniform4fv(prog.uGlobalAmbient,
-                    flatten(mult([0.7, 0.7, 0.7, 1.0], shape.ambient)));
+                    flatten(mult([0.2, 0.2, 0.2, 1.0], shape.ambient)));
 
             if (shape.normalMap !== -1) {
                 gl.uniform1i(prog.uNormalId, shape.normalMap);
             }
             gl.uniform1i(prog.uIsNormalMapped, shape.normalMap !== -1);
+
+            if (shape.specularMap !== -1) {
+                gl.uniform1i(prog.uSpecId, shape.specularMap);
+            }
+            gl.uniform1i(prog.uIsSpecMapped, shape.specularMap !== -1);
 
             gl.uniform1i(prog.uTextureId, shape.texture);
             gl.uniform1iv(prog.uLightOn, new Int32Array(_enabled));
