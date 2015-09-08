@@ -37,8 +37,11 @@
     shapes[0].position( 0.25,   0.25, -3);
     shapes[1].position(-0.25,  0.25, -3);
     shapes[2].position(-0.25, -0.25, -3);
+
     shapes[0].texture   = 0;
     shapes[0].normalMap = -1;
+    shapes[2].texture   = 3;
+    shapes[2].normalMap = -1;
 
     /* Set up canvas */
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -100,7 +103,11 @@
     /* Textures */
     textures.checkers(gl, gl.TEXTURE0);
     textures.mars(gl, gl.TEXTURE1);
-    textures.marsBumps(gl, gl.TEXTURE2);
+    textures.marsNormal(gl, gl.TEXTURE2);
+    textures.earth(gl, gl.TEXTURE3);
+    textures.earthBump(gl, gl.TEXTURE4);
+    textures.earthSpecs(gl, gl.TEXTURE5);
+    textures.earthCloud(gl, gl.TEXTURE6);
 
     var lightsBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, lightsBuffer);
@@ -157,7 +164,7 @@
             });
 
             gl.uniform4fv(prog.uGlobalAmbient,
-                    flatten(mult([0.3, 0.3, 0.3, 1.0], shape.ambient)));
+                    flatten(mult([0.7, 0.7, 0.7, 1.0], shape.ambient)));
 
             if (shape.normalMap !== -1) {
                 gl.uniform1i(prog.uNormalId, shape.normalMap);
