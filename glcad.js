@@ -70,8 +70,7 @@
     var uniforms   = [
         'uPerspective', 'uTransform', 'uAmbient', 'uDiffuse', 'uSpecular',
         'uShine', 'uLightOn', 'uGlobalAmbient', 'uLight', 'uBasic', 'uIsBasic',
-        'uTextureId', 'uNormalId', 'uSpecId', 'uIsNormalMapped',
-        'uIsSpecMapped'
+        'uTextureId', 'uIsSpecMapped'
     ];
 
     var mapAttributes = function(p, a, u) {
@@ -173,16 +172,6 @@
 
             gl.uniform4fv(prog.uGlobalAmbient,
                     flatten(mult([0.2, 0.2, 0.2, 1.0], shape.ambient)));
-
-            if (shape.normalMap !== -1) {
-                gl.uniform1i(prog.uNormalId, shape.normalMap);
-            }
-            gl.uniform1i(prog.uIsNormalMapped, shape.normalMap !== -1);
-
-            if (shape.specularMap !== -1) {
-                gl.uniform1i(prog.uSpecId, shape.specularMap);
-            }
-            gl.uniform1i(prog.uIsSpecMapped, shape.specularMap !== -1);
 
             gl.uniform1i(prog.uTextureId, shape.texture);
             gl.uniform1iv(prog.uLightOn, new Int32Array(_enabled));

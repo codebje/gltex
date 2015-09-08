@@ -9,10 +9,11 @@ uniform vec4 uGlobalAmbient;
 uniform vec4 uAmbient[2], uDiffuse[2], uSpecular[2];
 uniform bool uLightOn[2];
 uniform float uShine;
-uniform sampler2D uTextureId, uNormalId, uSpecId;
-uniform bool uIsNormalMapped, uIsSpecMapped;
+uniform sampler2D uTextureId, uCloudsId;
+uniform float uCloudsOffset;
+uniform bool uCloudsEnabled;
 
-varying vec3 L[2], N, E, T;
+varying vec3 L[2], N, E;
 varying float dist[2];
 varying vec2 texCoords;
 
@@ -21,14 +22,10 @@ void main() {
         gl_FragColor = uBasic;
     } else {
         vec4 color = uGlobalAmbient;
-        vec2 texCoord = vec2( atan(T.z, T.x) / (2. * M_PI), acos(T.y) / M_PI);
+        vec2 texCoord = vec2( atan(N.z, N.x) / (2. * M_PI), acos(N.y) / M_PI);
         vec4 tex   = texture2D(uTextureId, texCoord);
 
         vec3 NM = N;
-        if (uIsNormalMapped) {
-            vec3 TN = normalize(texture2D(uNormalId, texCoord).rgb * 2.0 - 1.0);
-            NM = normalize(N + TN);
-        }
 
         for (int i = 0; i < 2; i++) {
             if (uLightOn[i]) {
@@ -40,15 +37,7 @@ void main() {
                 color += Kd * (tex + uDiffuse[i]) / dist[i];
 
                 float shine = uShine;
-                bool specEnabled = true;
-                if (uIsSpecMapped) {
-                    float r = texture2D(uSpecId, texCoord).r;
-                    if (r < 0.02) {
-                        specEnabled = false;
-                    }
-                }
-
-                if (dot(L[i], NM) > 0.0 && specEnabled) {
+                if (dot(L[i], NM) > 0.0) {
                     float Ks = pow(max(dot(NM, H), 0.0), shine);
                     color += Ks * uSpecular[i] / dist[i];
                 }

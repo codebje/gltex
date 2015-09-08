@@ -39,6 +39,6 @@ function UI(shapes, lights) {
     setup(['phi_', 'rho_', 'the_'], shapes[0], randoms());
     setup(['phi0', 'rho0', 'the0'], shapes[2], randoms());
 
-    normcheck('spec', shapes[1]);
-    normcheck('spec0', shapes[2]);
+    //normcheck('spec', shapes[1]);
+    //normcheck('spec0', shapes[2]);
 }
