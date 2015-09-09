@@ -25,7 +25,7 @@ void main() {
     if (uUseDisplacement) {
         vec2 texCoord = vec2( (M_PI + atan(T.z, T.x)) / (2. * M_PI), acos(T.y) / M_PI);
         vec4 displacement = texture2D(uDisplacementMap, texCoord);
-        pos += vec4(displacement.g / 32. * N, 1.0);
+        pos += vec4((displacement.g - 0.5) / 20. * N, 1.0);
     }
 
     gl_Position = uPerspective * pos;
