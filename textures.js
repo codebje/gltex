@@ -55,6 +55,7 @@ var textures = {};
 
     textures.mars       = image('mars_1k_color.jpg');
     textures.marsNormal = image('mars_1k_normal.jpg');
+    textures.marsDispl  = image('mars_1k_displ.png');
     textures.earth      = image('earthmap1k.jpg');
     textures.earthNorm  = image('earthnorm1k.png');
     textures.earthSpecs = image('earthspec1k.jpg');

@@ -42,6 +42,7 @@
     textures.earthNorm(gl, gl.TEXTURE4);
     textures.earthSpecs(gl, gl.TEXTURE5);
     textures.earthCloud(gl, gl.TEXTURE6);
+    textures.marsDispl(gl, gl.TEXTURE7);
 
     shapes[0].position( 0.3,  0.3, -3);
     shapes[1].position(-0.3,  0.3, -3);
@@ -52,6 +53,7 @@
     shapes[0].normalMap   = -1;
     shapes[1].texture     = 1;  // Mars
     shapes[1].normalMap   = 2;
+    shapes[1].displMap    = 7;
     shapes[1].shine       = 10;
     shapes[1].specular    = vec4(0.1, 0.1, 0.1, 1.0);
     shapes[2].texture     = 3;  // Earth
@@ -75,7 +77,7 @@
         'uPerspective', 'uTransform', 'uAmbient', 'uDiffuse', 'uSpecular',
         'uShine', 'uLightOn', 'uGlobalAmbient', 'uLight', 'uBasic', 'uIsBasic',
         'uTextureId', 'uCloudsId', 'uCloudsOffset', 'uCloudsEnabled',
-        'uIsPlanar'
+        'uIsPlanar', 'uDisplacementMap', 'uUseDisplacement'
     ];
 
     var mapAttributes = function(p, a, u) {
@@ -184,6 +186,12 @@
             gl.uniform4fv(prog.uAmbient, flatten(_ambient));
             gl.uniform4fv(prog.uDiffuse, flatten(_diffuse));
             gl.uniform4fv(prog.uSpecular, flatten(_specular));
+
+            gl.uniform1i(prog.uUseDisplacement, 0);
+            if (shape.displMap !== undefined) {
+                gl.uniform1i(prog.uUseDisplacement, 1);
+                gl.uniform1i(prog.uDisplacementMap, shape.displMap);
+            }
 
             gl.uniform1i(prog.uCloudsEnabled, 0);
             if (shape.cloudMap !== undefined) {
